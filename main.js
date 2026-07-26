@@ -235,6 +235,14 @@ function initIntro() {
   const animatedText = getElement('intro-animate');
   if (!intro || !main || !continueButton || !animatedText) return;
 
+  const seenIntro = localStorage.getItem('seenIntro') === 'true';
+  if (seenIntro) {
+    intro.hidden = true;
+    intro.style.display = 'none';
+    main.style.display = '';
+    return;
+  }
+
   document.body.classList.add('intro-active');
   continueButton.disabled = true;
 
@@ -247,6 +255,7 @@ function initIntro() {
     intro.style.display = 'none';
     main.style.display = '';
     document.body.classList.remove('intro-active');
+    localStorage.setItem('seenIntro', 'true');
     if (timeoutId) {
       clearTimeout(timeoutId);
       timeoutId = null;
