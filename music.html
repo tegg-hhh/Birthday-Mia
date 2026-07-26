@@ -31,11 +31,31 @@
     width: 100%;
     aspect-ratio: 1 / 1;
     border-radius: 14px;
-    background-image: url('1.jpeg');
+    background-image: url('pho1.jpeg');
     background-size: cover;
     background-position: center;
     margin-bottom: 14px;
   }
+
+  /* Slightly transparent header for music page */
+  .page-header.music {
+    background: rgba(20,7,12,0.28);
+    border-bottom: none;
+    position: absolute;
+    top: 18px;
+    left: 18px;
+    right: 18px;
+    padding: 10px 16px;
+    border-radius: 12px;
+    max-width: calc(100% - 36px);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 30;
+    backdrop-filter: blur(6px);
+  }
+
+  .page-header.music .site-nav a { color: rgba(255,255,255,0.9); }
 
   .device-label {
     font-size: 13px;
@@ -128,6 +148,17 @@
 </style>
 </head>
 <body>
+<div class="widget">
+
+<header class="page-header music">
+  <div class="site-brand">Untuk Kamu 💌</div>
+  <nav class="site-nav">
+    <a href="index.html">Home</a>
+    <a href="music.html">Music</a>
+  </nav>
+</header>
+
+<div style="height:14px"></div>
 
 <div class="widget">
   <div class="album-art" id="albumArt"></div>
@@ -161,16 +192,16 @@
 <script>
   // Playlist-enabled widget: keeps the compact UI but supports multiple tracks
   const playlist = [
-    { title: "Sempurna", artist: "Andra & the Backbone", src: "sempurna.mp3", cover: "1.jpeg" },
-    { title: "Lagu 2", artist: "Artis 2", src: "", cover: "2.jpeg" },
-    { title: "Lagu 3", artist: "Artis 3", src: "", cover: "3.jpeg" },
-    { title: "Lagu 4", artist: "Artis 4", src: "", cover: "4.jpeg" },
-    { title: "Lagu 5", artist: "Artis 5", src: "", cover: "5.jpeg" },
-    { title: "Lagu 6", artist: "Artis 6", src: "", cover: "6.jpeg" },
-    { title: "Lagu 7", artist: "Artis 7", src: "", cover: "7.jpeg" },
-    { title: "Lagu 8", artist: "Artis 8", src: "", cover: "8.jpeg" },
-    { title: "Lagu 9", artist: "Artis 9", src: "", cover: "9.jpeg" },
-    { title: "Lagu 10", artist: "Artis 10", src: "", cover: "10.jpeg" }
+    { title: "Sempurna", artist: "Andra & the Backbone", src: "sempurna.mp3", cover: "pho1.jpeg" },
+    { title: "Lagu 2", artist: "Artis 2", src: "", cover: "pho2.jpeg" },
+    { title: "Lagu 3", artist: "Artis 3", src: "", cover: "pho3.jpeg" },
+    { title: "Lagu 4", artist: "Artis 4", src: "", cover: "pho4.jpeg" },
+    { title: "Lagu 5", artist: "Artis 5", src: "", cover: "pho5.jpeg" },
+    { title: "Lagu 6", artist: "Artis 6", src: "", cover: "pho6.jpeg" },
+    { title: "Lagu 7", artist: "Artis 7", src: "", cover: "pho7.jpeg" },
+    { title: "Lagu 8", artist: "Artis 8", src: "", cover: "pho8.jpeg" },
+    { title: "Lagu 9", artist: "Artis 9", src: "", cover: "pho9.jpeg" },
+    { title: "Lagu 10", artist: "Artis 10", src: "", cover: "pho10.jpeg" }
   ];
 
   let currentIndex = 0;
@@ -200,7 +231,7 @@
   function setAlbumArt(track, index){
     const candidates = [];
     if (track.cover) candidates.push(track.cover);
-    candidates.push(`${index+1}.jpeg`, `${index+1}.jpg`, `cover${index+1}.jpg`, `cover${index+1}.jpeg`, `cover${index+1}.png`);
+    candidates.push(`pho${index+1}.jpeg`, `pho${index+1}.jpg`, `${index+1}.jpeg`, `${index+1}.jpg`, `cover${index+1}.jpg`, `cover${index+1}.jpeg`, `cover${index+1}.png`);
     trySetArtByCandidates(albumArt, candidates);
   }
 
