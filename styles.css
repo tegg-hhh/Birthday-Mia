@@ -251,6 +251,13 @@ p.sub,
   font-size: 2rem;
 }
 
+.polaroid .photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  border-radius: 14px;
+}
 .polaroid .cap {
   margin-top: 14px;
   font-family: 'Cormorant Garamond', serif;
