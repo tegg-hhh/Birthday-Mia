@@ -22,6 +22,12 @@ Sebuah laman web peribadi "Untuk Kamu" yang menggunakan HTML, CSS, dan JavaScrip
 - Tambah fail audio ke folder projek dengan nama `song.mp3`, atau kemas kini `src` dalam `music.html`.
 - Contoh jalan fail: `song.mp3` jika anda letak fail di root projek.
 
+## GitHub Pages
+
+- Fail sudah disediakan untuk GitHub Pages deployment.
+- Anda boleh hidupkan Pages di settings repo dan gunakan `main` atau `gh-pages` sebagai sumber.
+- Kemungkinan URL: `https://tegg-hhh.github.io/Birthday-Mia/`
+
 ## Nota
 
 - Pastikan semua fail berada di folder yang sama supaya pautan halaman dan sumber berfungsi.
