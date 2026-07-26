@@ -19,8 +19,8 @@ Sebuah laman web peribadi "Untuk Kamu" yang menggunakan HTML, CSS, dan JavaScrip
 
 ## Menambah Muzik pada `music.html`
 
-- Tambah fail audio ke folder projek dengan nama `song.mp3`, atau kemas kini `src` dalam `music.html`.
-- Contoh jalan fail: `song.mp3` jika anda letak fail di root projek.
+- Tambah fail audio ke folder projek dengan nama `sempurna.mp3`, atau kemas kini `src` dalam `music.html` dan `index.html`.
+- Contoh jalan fail: `sempurna.mp3` jika anda letak fail di root projek.
 
 ## GitHub Pages
 
