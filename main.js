@@ -279,11 +279,40 @@ function initIntro() {
   typeNextChar();
 }
 
+function initBackgroundAudio() {
+  const bgAudio = document.getElementById('bgAudio');
+  const toggleButton = document.getElementById('bgAudioToggle');
+  if (!bgAudio || !toggleButton) return;
+
+  bgAudio.volume = 0.55;
+  bgAudio.loop = true;
+  bgAudio.play().catch(() => {
+    showToast('Audio latar tidak dapat dimainkan secara automatik, tekan butang untuk cuba lagi.');
+  });
+
+  function updateButton() {
+    toggleButton.textContent = bgAudio.paused ? 'Play Music' : 'Pause Music';
+  }
+
+  toggleButton.addEventListener('click', () => {
+    if (bgAudio.paused) {
+      bgAudio.play();
+    } else {
+      bgAudio.pause();
+    }
+    updateButton();
+  });
+
+  bgAudio.addEventListener('play', updateButton);
+  bgAudio.addEventListener('pause', updateButton);
+}
+
 function initPage() {
   initIntro();
   initCountdown();
   initQuiz();
   initEnvelope();
+  initBackgroundAudio();
 }
 
 document.addEventListener('DOMContentLoaded', initPage);

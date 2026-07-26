@@ -1,12 +1,13 @@
 :root {
-  --bg: #2A1B2E;
-  --bg-soft: #3A2740;
-  --ink: #F5EBE0;
-  --ink-dim: #C9B8C4;
-  --gold: #CBA35C;
-  --rose: #D98A94;
-  --sage: #8FA283;
-  --surface: rgba(245,235,224,0.12);
+  --bg: #2a0812;
+  --bg-soft: #531520;
+  --ink: #f6e6e4;
+  --ink-dim: #d8b8bc;
+  --accent: #d63e53;
+  --accent-soft: #8f1c2c;
+  --surface: rgba(246,230,228,0.12);
+  --card: rgba(255,255,255,0.08);
+  --shadow: rgba(0,0,0,0.24);
 }
 
 * {
@@ -253,9 +254,121 @@ p.sub,
 .polaroid .cap {
   margin-top: 14px;
   font-family: 'Cormorant Garamond', serif;
-  color: #2A1B2E;
+  color: #f7e3e0;
   font-size: 1rem;
   font-style: italic;
+}
+
+.audio-banner {
+  max-width: 1000px;
+  margin: 0 auto 32px;
+  padding: 24px 28px;
+  border-radius: 28px;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.12);
+  box-shadow: 0 28px 70px rgba(0,0,0,0.22);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+.audio-banner .audio-info {
+  max-width: 620px;
+}
+
+.audio-banner .eyebrow {
+  margin-bottom: 10px;
+  color: #f7d6d8;
+}
+
+.audio-banner h2 {
+  font-size: clamp(1.4rem, 2.5vw, 2rem);
+  margin: 0;
+  color: #fff;
+}
+
+.audio-banner p {
+  margin: 10px 0 0;
+  color: var(--ink-dim);
+  line-height: 1.7;
+}
+
+.audio-toggle {
+  border: none;
+  border-radius: 999px;
+  padding: 14px 24px;
+  background: linear-gradient(135deg, #e15d70, #b21d34);
+  color: #fff;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 12px 30px rgba(178, 29, 52, 0.35);
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.audio-toggle:hover {
+  transform: translateY(-2px);
+}
+
+body {
+  background: radial-gradient(circle at 20% 10%, rgba(255, 118, 135, 0.15), transparent 25%),
+              radial-gradient(circle at 80% 10%, rgba(214, 62, 83, 0.16), transparent 25%),
+              radial-gradient(circle at 50% 50%, rgba(0,0,0,0.30), transparent 40%),
+              linear-gradient(180deg, #2b0915 0%, #12040c 100%);
+}
+
+.page-header {
+  background: rgba(20, 7, 12, 0.88);
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+  padding: 18px 24px;
+  position: sticky;
+  top: 0;
+  backdrop-filter: blur(10px);
+  z-index: 20;
+}
+
+body.intro-active {
+  overflow: hidden;
+}
+
+#timeline,
+#quiz,
+#reveal {
+  background: linear-gradient(180deg, rgba(45, 12, 20, 0.94), rgba(19, 5, 11, 0.98));
+}
+
+.cd-box {
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.12);
+}
+
+.cd-num {
+  color: #ff8aac;
+}
+
+.polaroid {
+  background: rgba(255,255,255,0.06);
+}
+
+.polaroid .photo {
+  background: linear-gradient(135deg, #811c2e, #4c0813);
+  color: #f9e7e4;
+}
+
+.q-opt {
+  border-color: rgba(255,255,255,0.12);
+}
+
+.q-opt.correct {
+  background: rgba(221, 116, 129, 0.28);
+}
+
+.q-opt.wrong {
+  background: rgba(143, 33, 46, 0.32);
+}
+
+.q-input {
+  background: rgba(255,255,255,0.05);
 }
 
 #quiz {
