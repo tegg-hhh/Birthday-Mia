@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Untuk Kamu 💌</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,500&family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+  <style>
+    html.intro-hidden #intro { display: none !important; }
+    html.intro-hidden #main { display: block !important; }
+  </style>
+  <script>
+    if (localStorage.getItem('seenIntro') === 'true') {
+      document.documentElement.classList.add('intro-hidden');
+    }
+  </script>
+</head>
+<body>
+  <!-- Intro Splash Screen -->
+  <div id="intro" class="intro">
+    <h1>💖 Happy Birthday, Mia 💖</h1>
+    <div class="intro-message">
+      <span id="intro-animate"></span><span class="cursor">|</span>
+    </div>
+    <button id="intro-continue" class="intro-button" type="button" disabled>Loading...</button>
+  </div>
+
+  <!-- Main Content -->
+  <div id="main" class="container" style="display:none;">
+    <header class="page-header">
+      <div class="site-brand">Untuk Kamu 💌</div>
+      <nav class="site-nav">
+        <a href="index.html">Home</a>
+        <a href="music.html">Music</a>
+      </nav>
+    </header>
+    <main>
+      <section id="hero">
+        <div class="eyebrow">untuk kamu</div>
+        <h1>Countdown ke hari special sayang 🎂</h1>
+        <p class="sub" id="hero-sub">Setiap saat makin dekat dengan hari kita nak raikan kamu.</p>
+        <div class="countdown" id="countdown">
+          <div class="cd-box"><div class="cd-num" id="cd-days">--</div><div class="cd-label">Hari</div></div>
+          <div class="cd-box"><div class="cd-num" id="cd-hours">--</div><div class="cd-label">Jam</div></div>
+          <div class="cd-box"><div class="cd-num" id="cd-mins">--</div><div class="cd-label">Minit</div></div>
+          <div class="cd-box"><div class="cd-num" id="cd-secs">--</div><div class="cd-label">Saat</div></div>
+        </div>
+      </section>
+      <section id="timeline">
+        <div class="eyebrow">kenangan kita</div>
+        <h2>Sikit babak yang saya sayang</h2>
+        <p class="sub">Scroll ke kanan untuk lihat lagi →</p>
+        <div class="thread">
+          <div class="polaroid"><div class="photo">📍</div><div class="cap">first date kita</div></div>
+          <div class="polaroid"><div class="photo">🌇</div><div class="cap">sunset yang tak boleh lupa</div></div>
+          <div class="polaroid"><div class="photo">🍜</div><div class="cap">makan sedap sampai gaduh sikit</div></div>
+          <div class="polaroid"><div class="photo">📸</div><div class="cap">gambar paling gedik korang</div></div>
+        </div>
+      </section>
+      <section id="quiz">
+        <div class="eyebrow">main sikit</div>
+        <h2>How well do you know us?</h2>
+        <div class="quiz-card" id="quiz-card"></div>
+      </section>
+      <section id="reveal">
+        <div class="eyebrow">last one</div>
+        <div class="reveal-btn-label">Tap sampul surat ni</div>
+        <div class="envelope" id="envelope" role="button" tabindex="0" aria-label="Buka surprise">
+          <div class="env-body"></div>
+          <div class="env-flap"></div>
+          <div class="env-seal">💌</div>
+        </div>
+        <div class="letter" id="letter">
+          <h2>Selamat Hari Jadi, Sayang</h2>
+        </div>
+      </section>
+    </main>
+  </div>
+  <script src="main.js"></script>
+</body>
+</html>
