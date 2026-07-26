@@ -90,7 +90,7 @@
     width: auto;
   }
 
-  .player.compact .artwork{ height: 140px; border-radius:10px; }
+  .player.compact .artwork{ height: 120px; border-radius:10px; overflow:hidden; }
   .player.compact .artwork img{ width:100%; height:100%; object-fit:cover; display:block; }
   .player.compact .meta .title{ font-size:16px; }
   .player.compact .meta .artist{ font-size:13px; }
@@ -281,7 +281,7 @@
 </head>
 <body>
 <header class="page-header">
-  <div class="site-brand">Untuk Kamu 💌</div>
+  <div class="site-brand"> 💌</div>
   <nav class="site-nav">
     <a href="index.html">Home</a>
     <a href="music.html">Music</a>
@@ -295,16 +295,16 @@
 <script>
   // Compact playlist with cover slots (replace coverX.jpg and src as needed)
   const playlist = [
-    { title: "Sempurna", artist: "Andra & the Backbone", src: "sempurna.mp3", cover: "cover1.jpg" },
-    { title: "Lagu 2", artist: "Artis 2", src: "", cover: "cover2.jpg" },
-    { title: "Lagu 3", artist: "Artis 3", src: "", cover: "cover3.jpg" },
-    { title: "Lagu 4", artist: "Artis 4", src: "", cover: "cover4.jpg" },
-    { title: "Lagu 5", artist: "Artis 5", src: "", cover: "cover5.jpg" },
-    { title: "Lagu 6", artist: "Artis 6", src: "", cover: "cover6.jpg" },
-    { title: "Lagu 7", artist: "Artis 7", src: "", cover: "cover7.jpg" },
-    { title: "Lagu 8", artist: "Artis 8", src: "", cover: "cover8.jpg" },
-    { title: "Lagu 9", artist: "Artis 9", src: "", cover: "cover9.jpg" },
-    { title: "Lagu 10", artist: "Artis 10", src: "", cover: "cover10.jpg" }
+    { title: "Sempurna", artist: "Andra & the Backbone", src: "sempurna.mp3" },
+    { title: "Lagu 2", artist: "Artis 2", src: "" },
+    { title: "Lagu 3", artist: "Artis 3", src: "" },
+    { title: "Lagu 4", artist: "Artis 4", src: "" },
+    { title: "Lagu 5", artist: "Artis 5", src: "" },
+    { title: "Lagu 6", artist: "Artis 6", src: "" },
+    { title: "Lagu 7", artist: "Artis 7", src: "" },
+    { title: "Lagu 8", artist: "Artis 8", src: "" },
+    { title: "Lagu 9", artist: "Artis 9", src: "" },
+    { title: "Lagu 10", artist: "Artis 10", src: "" }
   ];
 
   const playersRoot = document.getElementById('players');
@@ -392,6 +392,16 @@
     });
 
     playersRoot.appendChild(card);
+
+    // Try cover filenames by number: 1.jpeg / 1.jpg / cover1.jpg / cover1.jpeg
+    const img = card.querySelector('.artwork img');
+    const candidates = [`${i+1}.jpeg`, `${i+1}.jpg`, `cover${i+1}.jpg`, `cover${i+1}.jpeg`, `cover${i+1}.png`];
+    (function trySet(n){
+      if (n >= candidates.length) return;
+      img.src = candidates[n];
+      img.onload = () => { img.style.opacity = 1; };
+      img.onerror = () => trySet(n+1);
+    })(0);
   });
 </script>
 
