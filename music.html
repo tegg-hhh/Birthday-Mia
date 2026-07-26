@@ -159,7 +159,21 @@
 </div>
 
 <script>
-  // Minimal widget JS: play/pause, progress, prev/next placeholders
+  // Playlist-enabled widget: keeps the compact UI but supports multiple tracks
+  const playlist = [
+    { title: "Sempurna", artist: "Andra & the Backbone", src: "sempurna.mp3", cover: "1.jpeg" },
+    { title: "Lagu 2", artist: "Artis 2", src: "", cover: "2.jpeg" },
+    { title: "Lagu 3", artist: "Artis 3", src: "", cover: "3.jpeg" },
+    { title: "Lagu 4", artist: "Artis 4", src: "", cover: "4.jpeg" },
+    { title: "Lagu 5", artist: "Artis 5", src: "", cover: "5.jpeg" },
+    { title: "Lagu 6", artist: "Artis 6", src: "", cover: "6.jpeg" },
+    { title: "Lagu 7", artist: "Artis 7", src: "", cover: "7.jpeg" },
+    { title: "Lagu 8", artist: "Artis 8", src: "", cover: "8.jpeg" },
+    { title: "Lagu 9", artist: "Artis 9", src: "", cover: "9.jpeg" },
+    { title: "Lagu 10", artist: "Artis 10", src: "", cover: "10.jpeg" }
+  ];
+
+  let currentIndex = 0;
   const audio = document.getElementById('audio');
   const playBtn = document.getElementById('playBtn');
   const playIcon = document.getElementById('playIcon').querySelector('path');
@@ -169,13 +183,48 @@
   const remainingTimeEl = document.getElementById('remainingTime');
   const progressFill = document.getElementById('progressFill');
   const albumArt = document.getElementById('albumArt');
+  const trackTitle = document.getElementById('trackTitle');
+  const trackArtist = document.getElementById('trackArtist');
 
   const playPath = 'M8 5v14l11-7z';
   const pausePath = 'M6 5h4v14H6zM14 5h4v14h-4z';
 
+  function formatTime(sec){ if (!isFinite(sec) || isNaN(sec)) return '0:00'; const m=Math.floor(sec/60); const s=Math.floor(sec%60).toString().padStart(2,'0'); return `${m}:${s}` }
+
+  function trySetArtByCandidates(el, candidates){
+    let i=0;
+    function next(){ if(i>=candidates.length) return; const u=candidates[i++]; const img=new Image(); img.onload=()=>{ el.style.backgroundImage = `url(${u})`; }; img.onerror=next; img.src=u }
+    next();
+  }
+
+  function setAlbumArt(track, index){
+    const candidates = [];
+    if (track.cover) candidates.push(track.cover);
+    candidates.push(`${index+1}.jpeg`, `${index+1}.jpg`, `cover${index+1}.jpg`, `cover${index+1}.jpeg`, `cover${index+1}.png`);
+    trySetArtByCandidates(albumArt, candidates);
+  }
+
+  function loadTrack(index, autoplay=false){
+    currentIndex = (index + playlist.length) % playlist.length;
+    const t = playlist[currentIndex];
+    trackTitle.textContent = t.title || 'Unknown';
+    trackArtist.textContent = t.artist || '';
+    audio.src = t.src || '';
+    progressFill.style.width = '0%';
+    currentTimeEl.textContent = '0:00';
+    remainingTimeEl.textContent = '-0:00';
+    setAlbumArt(t, currentIndex);
+    if (autoplay && audio.src){ audio.play().catch(()=>{}); }
+  }
+
   playBtn.addEventListener('click', () => {
+    if (!audio.src){ // if no src, just show next track
+      loadTrack(currentIndex + 1, true);
+      return;
+    }
     if (audio.paused) audio.play(); else audio.pause();
   });
+
   audio.addEventListener('play', () => playIcon.setAttribute('d', pausePath));
   audio.addEventListener('pause', () => playIcon.setAttribute('d', playPath));
 
@@ -187,19 +236,13 @@
     remainingTimeEl.textContent = '-' + formatTime(audio.duration - audio.currentTime);
   });
 
-  function formatTime(sec){ if (!isFinite(sec)) return '0:00'; const m=Math.floor(sec/60); const s=Math.floor(sec%60).toString().padStart(2,'0'); return `${m}:${s}` }
+  audio.addEventListener('ended', () => loadTrack(currentIndex + 1, true));
 
-  // prev/next are placeholders (no playlist here)
-  prevBtn.addEventListener('click', () => { audio.currentTime = Math.max(0, audio.currentTime - 10); });
-  nextBtn.addEventListener('click', () => { audio.currentTime = Math.min(audio.duration||0, audio.currentTime + 10); });
+  prevBtn.addEventListener('click', () => loadTrack(currentIndex - 1, true));
+  nextBtn.addEventListener('click', () => loadTrack(currentIndex + 1, true));
 
-  // Try to set album art from numeric files (1.jpeg .. 10.jpeg)
-  (function trySetArt(){
-    const candidates = ['1.jpeg','1.jpg','cover1.jpg','cover1.jpeg','1.png'];
-    let idx=0;
-    function attempt(){ if(idx>=candidates.length) return; const u=candidates[idx++]; const img=new Image(); img.onload=(()=>{ albumArt.style.backgroundImage = `url(${u})`; }); img.onerror=attempt; img.src=u }
-    attempt();
-  })();
+  // initial
+  loadTrack(0, false);
 </script>
 </body>
 </html>
