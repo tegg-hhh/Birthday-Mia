@@ -233,15 +233,20 @@ p.sub,
 
 .polaroid {
   min-width: 220px;
+  max-width: 280px;
+  width: 100%;
   background: #F5EBE0;
   border-radius: 16px;
   padding: 18px;
   box-shadow: 0 20px 40px rgba(0,0,0,0.18);
   scroll-snap-align: center;
+  margin: 0 auto;
 }
 
 .polaroid .photo {
-  width: 100%;
+  width: 220px;
+  height: 220px;
+  max-width: 100%;
   aspect-ratio: 1 / 1;
   border-radius: 14px;
   display: grid;
@@ -249,6 +254,7 @@ p.sub,
   background: linear-gradient(135deg, #D98A94, #CBA35C);
   color: #2A1B2E;
   font-size: 2rem;
+  margin: 0 auto;
 }
 
 .polaroid .photo img {
@@ -593,7 +599,8 @@ body.intro-active {
   }
 
   .polaroid {
-    min-width: 180px;
+    min-width: 160px;
+    max-width: 240px;
   }
 
   .thread {
