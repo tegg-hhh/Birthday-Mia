@@ -75,6 +75,28 @@
     border: 1px solid rgba(255,255,255,.06);
   }
 
+  .players-grid{
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 18px;
+    width: 100%;
+    max-width: 1100px;
+  }
+
+  .player.compact{
+    border-radius:18px;
+    padding:12px;
+    background: linear-gradient(180deg, #131315, #0f0f10);
+    width: auto;
+  }
+
+  .player.compact .artwork{ height: 140px; border-radius:10px; }
+  .player.compact .artwork img{ width:100%; height:100%; object-fit:cover; display:block; }
+  .player.compact .meta .title{ font-size:16px; }
+  .player.compact .meta .artist{ font-size:13px; }
+  .player.compact .controls{ margin-top:12px; }
+  .player.compact .seek{ height:3px; }
+
   .artwork{
     background: var(--bg-art);
     border-radius: 20px;
@@ -209,9 +231,6 @@
   button.icon-btn svg{ width:26px; height:26px; }
   #playBtn svg{ width:30px; height:30px; }
 
-  #airplayBtn{ color: var(--text-secondary); }
-  #airplayBtn.active{ color: #4aa3ff; }
-
   .volume-row{
     display:flex;
     align-items:center;
@@ -269,90 +288,27 @@
   </nav>
 </header>
 
-<div class="player" id="player">
-  <div class="artwork">
-    <div class="waveform" id="waveform"></div>
-  </div>
-
-  <div class="meta">
-    <div class="device">iPhone</div>
-    <div class="title" id="titleText">I Wanna Be Yours</div>
-    <div class="artist" id="artistText">Arctic Monkeys</div>
-  </div>
-
-  <div class="progress-row">
-    <input type="range" class="seek" id="seek" min="0" max="100" value="0" step="0.1">
-    <div class="time-row">
-      <span id="currentTime">0:00</span>
-      <span id="remainingTime">-0:00</span>
-    </div>
-  </div>
-
-  <div class="controls">
-    <div class="ctrl-group">
-      <button class="icon-btn" id="prevBtn" aria-label="Lagu sebelum">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 6h2v12H6zM10 12l9-6v12z"/></svg>
-      </button>
-      <button class="icon-btn" id="playBtn" aria-label="Main/Jeda">
-        <svg viewBox="0 0 24 24" fill="currentColor" id="playIcon"><path d="M8 5v14l11-7z"/></svg>
-      </button>
-      <button class="icon-btn" id="nextBtn" aria-label="Lagu seterus">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M16 6h2v12h-2zM5 6l9 6-9 6z"/></svg>
-      </button>
-    </div>
-    <button class="icon-btn" id="airplayBtn" aria-label="AirPlay">
-      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 22l6-6 6 6zM19 3H5a2 2 0 00-2 2v10a2 2 0 002 2h3v-2H5V5h14v10h-3v2h3a2 2 0 002-2V5a2 2 0 00-2-2z"/></svg>
-    </button>
-  </div>
-
-  <div class="volume-row">
-    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 9v6h4l5 5V4L7 9H3z"/></svg>
-    <input type="range" class="volume" id="volume" min="0" max="1" step="0.01" value="0.7">
-    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0014 7.97v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>
-  </div>
-</div>
+<div id="players" class="players-grid"></div>
 
 <div class="toast" id="toast"></div>
 
-<audio id="audio" preload="metadata"></audio>
-
 <script>
-  // ====== SENARAI LAGU (tukar 'src' dengan fail lagu anda sendiri) ======
-  // Letak fail mp3/m4a anda dalam folder website, atau guna URL terus.
+  // Compact playlist with cover slots (replace coverX.jpg and src as needed)
   const playlist = [
-    { title: "Sempurna", artist: "Andra & the Backbone", src: "sempurna.mp3" },
-    // { title: "Lagu Kedua", artist: "Artis Kedua", src: "lagu2.mp3" },
+    { title: "Sempurna", artist: "Andra & the Backbone", src: "sempurna.mp3", cover: "cover1.jpg" },
+    { title: "Lagu 2", artist: "Artis 2", src: "", cover: "cover2.jpg" },
+    { title: "Lagu 3", artist: "Artis 3", src: "", cover: "cover3.jpg" },
+    { title: "Lagu 4", artist: "Artis 4", src: "", cover: "cover4.jpg" },
+    { title: "Lagu 5", artist: "Artis 5", src: "", cover: "cover5.jpg" },
+    { title: "Lagu 6", artist: "Artis 6", src: "", cover: "cover6.jpg" },
+    { title: "Lagu 7", artist: "Artis 7", src: "", cover: "cover7.jpg" },
+    { title: "Lagu 8", artist: "Artis 8", src: "", cover: "cover8.jpg" },
+    { title: "Lagu 9", artist: "Artis 9", src: "", cover: "cover9.jpg" },
+    { title: "Lagu 10", artist: "Artis 10", src: "", cover: "cover10.jpg" }
   ];
-  let currentIndex = 0;
 
-  const player = document.getElementById('player');
-  const audio = document.getElementById('audio');
-  const playBtn = document.getElementById('playBtn');
-  const playIcon = document.getElementById('playIcon');
-  const prevBtn = document.getElementById('prevBtn');
-  const nextBtn = document.getElementById('nextBtn');
-  const seek = document.getElementById('seek');
-  const currentTimeEl = document.getElementById('currentTime');
-  const remainingTimeEl = document.getElementById('remainingTime');
-  const volume = document.getElementById('volume');
-  const titleText = document.getElementById('titleText');
-  const artistText = document.getElementById('artistText');
-  const airplayBtn = document.getElementById('airplayBtn');
+  const playersRoot = document.getElementById('players');
   const toast = document.getElementById('toast');
-  const waveform = document.getElementById('waveform');
-
-  // Bina bar waveform
-  const BAR_COUNT = 46;
-  for (let i = 0; i < BAR_COUNT; i++) {
-    const bar = document.createElement('span');
-    const h = 20 + Math.round(Math.sin(i * 0.5) * 40 + Math.random() * 20);
-    bar.style.height = Math.max(15, Math.min(90, h)) + '%';
-    bar.style.animationDelay = (Math.random() * 1.1).toFixed(2) + 's';
-    waveform.appendChild(bar);
-  }
-
-  const playPath = "M8 5v14l11-7z";
-  const pausePath = "M6 5h4v14H6zM14 5h4v14h-4z";
 
   function formatTime(sec) {
     if (!isFinite(sec) || isNaN(sec)) return "0:00";
@@ -361,99 +317,82 @@
     return `${m}:${s}`;
   }
 
-  function loadTrack(index, autoplay) {
-    currentIndex = (index + playlist.length) % playlist.length;
-    const track = playlist[currentIndex];
-    titleText.textContent = track.title;
-    artistText.textContent = track.artist;
-    audio.src = track.src || "";
-    seek.value = 0;
-    updateSeekFill(0);
-    currentTimeEl.textContent = "0:00";
-    remainingTimeEl.textContent = "-0:00";
-    if (autoplay && track.src) {
-      audio.play().catch(() => showToast("Sila letak fail audio dahulu"));
-    } else if (autoplay && !track.src) {
-      showToast("Tiada fail audio — tukar 'src' dalam playlist");
-    }
-  }
-
-  function updateSeekFill(percent) {
-    seek.style.background = `linear-gradient(to right, var(--track-fill) ${percent}%, var(--track-fill) ${percent}%, var(--track-empty) ${percent}%, var(--track-empty) 100%)`;
-  }
-
-  function setPlayingState(isPlaying) {
-    player.classList.toggle('playing', isPlaying);
-    playIcon.setAttribute('d', isPlaying ? pausePath : playPath);
-  }
-
-  playBtn.addEventListener('click', () => {
-    if (!audio.src) {
-      showToast("Tiada fail audio — tukar 'src' dalam playlist");
-      setPlayingState(!player.classList.contains('playing'));
-      return;
-    }
-    if (audio.paused) {
-      audio.play();
-    } else {
-      audio.pause();
-    }
-  });
-
-  audio.addEventListener('play', () => setPlayingState(true));
-  audio.addEventListener('pause', () => setPlayingState(false));
-
-  prevBtn.addEventListener('click', () => {
-    if (audio.currentTime > 3) {
-      audio.currentTime = 0;
-    } else {
-      loadTrack(currentIndex - 1, true);
-    }
-  });
-
-  nextBtn.addEventListener('click', () => {
-    loadTrack(currentIndex + 1, true);
-  });
-
-  audio.addEventListener('timeupdate', () => {
-    if (!audio.duration) return;
-    const percent = (audio.currentTime / audio.duration) * 100;
-    seek.value = percent;
-    updateSeekFill(percent);
-    currentTimeEl.textContent = formatTime(audio.currentTime);
-    remainingTimeEl.textContent = "-" + formatTime(audio.duration - audio.currentTime);
-  });
-
-  audio.addEventListener('ended', () => loadTrack(currentIndex + 1, true));
-
-  seek.addEventListener('input', () => {
-    updateSeekFill(seek.value);
-    if (audio.duration) {
-      audio.currentTime = (seek.value / 100) * audio.duration;
-    }
-  });
-
-  volume.addEventListener('input', () => {
-    audio.volume = volume.value;
-    const percent = volume.value * 100;
-    volume.style.background = `linear-gradient(to right, var(--track-fill) ${percent}%, var(--track-fill) ${percent}%, var(--track-empty) ${percent}%, var(--track-empty) 100%)`;
-  });
-  audio.volume = volume.value;
-
-  airplayBtn.addEventListener('click', () => {
-    airplayBtn.classList.toggle('active');
-    showToast(airplayBtn.classList.contains('active') ? "AirPlay diaktifkan (demo)" : "AirPlay dimatikan");
-  });
-
-  let toastTimer;
   function showToast(msg) {
-    clearTimeout(toastTimer);
+    clearTimeout(window._toastTimer);
     toast.textContent = msg;
     toast.classList.add('show');
-    toastTimer = setTimeout(() => toast.classList.remove('show'), 2200);
+    window._toastTimer = setTimeout(() => toast.classList.remove('show'), 2200);
   }
 
-  loadTrack(0, false);
+  // Pause all other audios when one plays
+  function pauseAllExcept(activeAudio) {
+    document.querySelectorAll('audio').forEach(a => { if (a !== activeAudio) a.pause(); });
+  }
+
+  playlist.forEach((track, i) => {
+    const card = document.createElement('div');
+    card.className = 'player compact';
+
+    card.innerHTML = `
+      <div class="artwork"><img src="${track.cover || ''}" alt="${track.title}" onerror="this.style.opacity=.25;this.style.transform='scale(.98)';"/></div>
+      <div class="meta">
+        <div class="title">${track.title}</div>
+        <div class="artist">${track.artist}</div>
+      </div>
+      <div class="progress-row">
+        <input type="range" class="seek" min="0" max="100" value="0" step="0.1">
+        <div class="time-row"><span class="currentTime">0:00</span><span class="remainingTime">-0:00</span></div>
+      </div>
+      <div class="controls">
+        <div class="ctrl-group">
+          <button class="icon-btn play-btn" aria-label="Main/Jeda">
+            <svg viewBox="0 0 24 24" fill="currentColor" class="playIcon"><path d="M8 5v14l11-7z"/></svg>
+          </button>
+        </div>
+      </div>
+      <audio preload="metadata" src="${track.src || ''}"></audio>
+    `;
+
+    const audio = card.querySelector('audio');
+    const playBtn = card.querySelector('.play-btn');
+    const seek = card.querySelector('.seek');
+    const currentTimeEl = card.querySelector('.currentTime');
+    const remainingTimeEl = card.querySelector('.remainingTime');
+    const playIconPath = card.querySelector('.playIcon path');
+
+    const playPath = 'M8 5v14l11-7z';
+    const pausePath = 'M6 5h4v14H6zM14 5h4v14h-4z';
+
+    playBtn.addEventListener('click', () => {
+      if (!audio.src) { showToast('Tiada fail audio untuk "' + track.title + '"'); return; }
+      if (audio.paused) {
+        pauseAllExcept(audio);
+        audio.play();
+      } else {
+        audio.pause();
+      }
+    });
+
+    audio.addEventListener('play', () => { playIconPath.setAttribute('d', pausePath); card.classList.add('playing'); });
+    audio.addEventListener('pause', () => { playIconPath.setAttribute('d', playPath); card.classList.remove('playing'); });
+
+    audio.addEventListener('timeupdate', () => {
+      if (!audio.duration) return;
+      const percent = (audio.currentTime / audio.duration) * 100;
+      seek.value = percent;
+      seek.style.background = `linear-gradient(to right, var(--track-fill) ${percent}%, var(--track-fill) ${percent}%, var(--track-empty) ${percent}%, var(--track-empty) 100%)`;
+      currentTimeEl.textContent = formatTime(audio.currentTime);
+      remainingTimeEl.textContent = '-' + formatTime(audio.duration - audio.currentTime);
+    });
+
+    audio.addEventListener('ended', () => { audio.currentTime = 0; audio.pause(); });
+
+    seek.addEventListener('input', () => {
+      if (audio.duration) audio.currentTime = (seek.value / 100) * audio.duration;
+    });
+
+    playersRoot.appendChild(card);
+  });
 </script>
 
 </body>
