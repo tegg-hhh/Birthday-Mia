@@ -4,406 +4,202 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Now Playing — Untuk Kamu 💌</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,500&family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles.css">
 <style>
-  :root{
-    --bg-card: #17181a;
-    --bg-art: #0c0d0e;
-    --text-primary: #f5f5f7;
-    --text-secondary: #9a9a9e;
-    --track-fill: #d8d8db;
-    --track-empty: #3a3a3c;
-  }
-
-  * { box-sizing: border-box; }
-
-  body{
-    margin:0;
-    min-height:100vh;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    background: radial-gradient(circle at 30% 20%, #2b2b30, #08090a 70%);
-    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, sans-serif;
-    padding: 24px;
-    color: var(--text-primary);
-  }
-
-  .page-header {
-    position: absolute;
-    top: 20px;
-    left: 24px;
-    right: 24px;
+  body {
+    margin: 0;
+    min-height: 100vh;
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    gap: 16px;
-    z-index: 1;
+    justify-content: center;
+    background: radial-gradient(circle at center, #4a4a4a 0%, #1c1c1c 70%);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    padding: 24px;
   }
 
-  .site-brand {
-    font-family: 'Playfair Display', serif;
-    font-size: 1.1rem;
-    color: var(--text-primary);
-  }
-
-  .site-nav {
-    display: flex;
-    gap: 14px;
-    flex-wrap: wrap;
-  }
-
-  .site-nav a {
-    color: rgba(245,245,247,0.78);
-    text-decoration: none;
-    font-size: 0.9rem;
-  }
-
-  .site-nav a:hover {
+  .widget {
+    width: 320px;
+    background: rgba(30, 30, 30, 0.85);
+    backdrop-filter: blur(10px);
+    border-radius: 28px;
+    padding: 18px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.45);
     color: #fff;
   }
 
-  .player{
-    width: 320px;
-    background: linear-gradient(180deg, #1e1f21, #131416);
-    border-radius: 32px;
-    padding: 18px;
-    box-shadow: 0 30px 60px rgba(0,0,0,.55), inset 0 1px 0 rgba(255,255,255,.04);
-    border: 1px solid rgba(255,255,255,.06);
-  }
-
-  .players-grid{
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 18px;
+  .album-art {
     width: 100%;
-    max-width: 1100px;
+    aspect-ratio: 1 / 1;
+    border-radius: 14px;
+    background-image: url('1.jpeg');
+    background-size: cover;
+    background-position: center;
+    margin-bottom: 14px;
   }
 
-  .player.compact{
-    border-radius:18px;
-    padding:12px;
-    background: linear-gradient(180deg, #131315, #0f0f10);
-    width: auto;
-  }
-
-  .player.compact .artwork{ height: 120px; border-radius:10px; overflow:hidden; }
-  .player.compact .artwork img{ width:100%; height:100%; object-fit:cover; display:block; }
-  .player.compact .meta .title{ font-size:16px; }
-  .player.compact .meta .artist{ font-size:13px; }
-  .player.compact .controls{ margin-top:12px; }
-  .player.compact .seek{ height:3px; }
-
-  .artwork{
-    background: var(--bg-art);
-    border-radius: 20px;
-    height: 220px;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    overflow:hidden;
-    position:relative;
-  }
-
-  .waveform{
-    display:flex;
-    align-items:center;
-    gap:3px;
-    height: 90px;
-  }
-
-  .waveform span{
-    display:block;
-    width: 3px;
-    border-radius: 2px;
-    background: #f5f5f7;
-    height: 20%;
-    transform-origin: center;
-    animation: none;
-  }
-
-  .player.playing .waveform span{
-    animation: bounce 1.1s ease-in-out infinite;
-  }
-
-  @keyframes bounce{
-    0%, 100% { transform: scaleY(0.35); }
-    50% { transform: scaleY(1); }
-  }
-
-  .meta{
-    margin-top: 18px;
-    padding: 0 4px;
-  }
-
-  .meta .device{
-    color: var(--text-secondary);
+  .device-label {
     font-size: 13px;
+    color: #a0a0a0;
     margin-bottom: 4px;
   }
 
-  .meta .title{
-    color: var(--text-primary);
-    font-size: 20px;
+  .track-title {
+    font-size: 18px;
     font-weight: 700;
-    line-height: 1.25;
-    white-space: nowrap;
+    margin-bottom: 2px;
+  }
+
+  .track-artist {
+    font-size: 14px;
+    color: #b0b0b0;
+    margin-bottom: 12px;
+  }
+
+  .progress-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+  }
+
+  .time {
+    font-size: 12px;
+    color: #b0b0b0;
+    min-width: 34px;
+  }
+
+  .progress-bar {
+    flex: 1;
+    height: 4px;
+    background: #565656;
+    border-radius: 2px;
+    position: relative;
     overflow: hidden;
-    text-overflow: ellipsis;
   }
 
-  .meta .artist{
-    color: var(--text-secondary);
-    font-size: 17px;
-    margin-top: 2px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+  .progress-fill {
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 0%;
+    background: #d9d9d9;
+    border-radius: 2px;
+    transition: width .2s linear;
   }
 
-  .progress-row{
-    margin-top: 18px;
-    padding: 0 4px;
+  .controls {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 16px 6px 18px;
   }
 
-  .seek{
-    -webkit-appearance:none;
-    appearance:none;
-    width:100%;
-    height:4px;
-    border-radius:2px;
-    background: linear-gradient(to right, var(--track-fill) 0%, var(--track-fill) 0%, var(--track-empty) 0%, var(--track-empty) 100%);
-    outline:none;
-    cursor:pointer;
-  }
-  .seek::-webkit-slider-thumb{
-    -webkit-appearance:none;
-    width:12px; height:12px;
-    border-radius:50%;
-    background:#fff;
-    box-shadow: 0 1px 3px rgba(0,0,0,.4);
-    margin-top:-4px;
-    opacity:0;
-    transition: opacity .15s;
-  }
-  .seek:active::-webkit-slider-thumb{ opacity:1; }
-  .seek::-moz-range-thumb{
-    width:12px; height:12px; border:none; border-radius:50%; background:#fff;
+  .controls button {
+    background: none;
+    border: none;
+    color: #fff;
+    cursor: pointer;
+    padding: 0;
   }
 
-  .time-row{
-    display:flex;
-    justify-content:space-between;
-    color: var(--text-secondary);
-    font-size: 13px;
-    margin-top: 6px;
+  .airplay { color: #b0b0b0; }
+
+  .volume-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #b0b0b0;
   }
 
-  .controls{
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    margin-top: 22px;
-    padding: 0 6px;
+  .volume-bar {
+    flex: 1;
+    height: 4px;
+    background: #565656;
+    border-radius: 2px;
+    position: relative;
   }
 
-  .ctrl-group{
-    display:flex;
-    align-items:center;
-    gap: 28px;
+  .volume-fill {
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 55%;
+    background: #d9d9d9;
+    border-radius: 2px;
   }
-
-  button.icon-btn{
-    background:none;
-    border:none;
-    padding:0;
-    color: var(--text-primary);
-    cursor:pointer;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    -webkit-tap-highlight-color: transparent;
-  }
-  button.icon-btn:active{ opacity:.6; }
-  button.icon-btn svg{ width:26px; height:26px; }
-  #playBtn svg{ width:30px; height:30px; }
-
-  .volume-row{
-    display:flex;
-    align-items:center;
-    gap:10px;
-    margin-top: 26px;
-    padding: 0 4px;
-  }
-
-  .volume-row svg{ width:16px; height:16px; color: var(--text-secondary); flex-shrink:0; }
-
-  .volume{
-    -webkit-appearance:none;
-    appearance:none;
-    flex:1;
-    height:4px;
-    border-radius:2px;
-    background: linear-gradient(to right, var(--track-fill) 0%, var(--track-fill) 70%, var(--track-empty) 70%, var(--track-empty) 100%);
-    outline:none;
-    cursor:pointer;
-  }
-  .volume::-webkit-slider-thumb{
-    -webkit-appearance:none;
-    width:12px; height:12px;
-    border-radius:50%;
-    background:#fff;
-    margin-top:-4px;
-  }
-  .volume::-moz-range-thumb{
-    width:12px; height:12px; border:none; border-radius:50%; background:#fff;
-  }
-
-  .toast{
-    position:fixed;
-    bottom:24px; left:50%;
-    transform: translateX(-50%) translateY(20px);
-    background: rgba(30,30,32,.95);
-    color:#f5f5f7;
-    padding:10px 16px;
-    border-radius:12px;
-    font-size:13px;
-    opacity:0;
-    transition: opacity .25s, transform .25s;
-    pointer-events:none;
-    border:1px solid rgba(255,255,255,.08);
-  }
-  .toast.show{ opacity:1; transform: translateX(-50%) translateY(0); }
 </style>
 </head>
 <body>
-<header class="page-header">
-  <div class="site-brand"> 💌</div>
-  <nav class="site-nav">
-    <a href="index.html">Home</a>
-    <a href="music.html">Music</a>
-  </nav>
-</header>
 
-<div id="players" class="players-grid"></div>
+<div class="widget">
+  <div class="album-art" id="albumArt"></div>
 
-<div class="toast" id="toast"></div>
+  <div class="device-label">iPhone</div>
+  <div class="track-title" id="trackTitle">I Wanna Be Yours</div>
+  <div class="track-artist" id="trackArtist">Arctic Monkeys</div>
+
+  <div class="progress-row">
+    <span class="time" id="currentTime">0:00</span>
+    <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+    <span class="time" id="remainingTime">-0:00</span>
+  </div>
+
+  <div class="controls">
+    <button id="prevBtn" aria-label="Prev"><svg width="24" height="24" viewBox="0 0 24 24" fill="white"><path d="M11 18V6l-8.5 6 8.5 6zm.5-6l8.5 6V6l-8.5 6z"/></svg></button>
+    <button id="playBtn" aria-label="Play"><svg width="32" height="32" viewBox="0 0 24 24" fill="white" id="playIcon"><path d="M8 5v14l11-7z"/></svg></button>
+    <button id="nextBtn" aria-label="Next"><svg width="24" height="24" viewBox="0 0 24 24" fill="white"><path d="M13 6v12l8.5-6L13 6zM4 6v12l8.5-6L4 6z"/></svg></button>
+    <button class="airplay" id="airplayBtn"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 15c5-5 15-5 20 0M5.5 11.5c3.5-3.3 9.5-3.3 13 0M9 8c2-1.8 4-1.8 6 0"/><path d="M12 15l4 5H8l4-5z" fill="currentColor" stroke="none"/></svg></button>
+  </div>
+
+  <div class="volume-row">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M3 9v6h4l5 5V4L7 9H3z"/></svg>
+    <div class="volume-bar"><div class="volume-fill" id="volumeFill"></div></div>
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M3 9v6h4l5 5V4L7 9H3z"/><path d="M16 8a5 5 0 010 8" stroke="currentColor" stroke-width="1.5" fill="none"/></svg>
+  </div>
+
+  <audio id="audio" preload="metadata" src="sempurna.mp3"></audio>
+</div>
 
 <script>
-  // Compact playlist with cover slots (replace coverX.jpg and src as needed)
-  const playlist = [
-    { title: "Sempurna", artist: "Andra & the Backbone", src: "sempurna.mp3" },
-    { title: "Lagu 2", artist: "Artis 2", src: "" },
-    { title: "Lagu 3", artist: "Artis 3", src: "" },
-    { title: "Lagu 4", artist: "Artis 4", src: "" },
-    { title: "Lagu 5", artist: "Artis 5", src: "" },
-    { title: "Lagu 6", artist: "Artis 6", src: "" },
-    { title: "Lagu 7", artist: "Artis 7", src: "" },
-    { title: "Lagu 8", artist: "Artis 8", src: "" },
-    { title: "Lagu 9", artist: "Artis 9", src: "" },
-    { title: "Lagu 10", artist: "Artis 10", src: "" }
-  ];
+  // Minimal widget JS: play/pause, progress, prev/next placeholders
+  const audio = document.getElementById('audio');
+  const playBtn = document.getElementById('playBtn');
+  const playIcon = document.getElementById('playIcon').querySelector('path');
+  const prevBtn = document.getElementById('prevBtn');
+  const nextBtn = document.getElementById('nextBtn');
+  const currentTimeEl = document.getElementById('currentTime');
+  const remainingTimeEl = document.getElementById('remainingTime');
+  const progressFill = document.getElementById('progressFill');
+  const albumArt = document.getElementById('albumArt');
 
-  const playersRoot = document.getElementById('players');
-  const toast = document.getElementById('toast');
+  const playPath = 'M8 5v14l11-7z';
+  const pausePath = 'M6 5h4v14H6zM14 5h4v14h-4z';
 
-  function formatTime(sec) {
-    if (!isFinite(sec) || isNaN(sec)) return "0:00";
-    const m = Math.floor(sec / 60);
-    const s = Math.floor(sec % 60).toString().padStart(2, '0');
-    return `${m}:${s}`;
-  }
-
-  function showToast(msg) {
-    clearTimeout(window._toastTimer);
-    toast.textContent = msg;
-    toast.classList.add('show');
-    window._toastTimer = setTimeout(() => toast.classList.remove('show'), 2200);
-  }
-
-  // Pause all other audios when one plays
-  function pauseAllExcept(activeAudio) {
-    document.querySelectorAll('audio').forEach(a => { if (a !== activeAudio) a.pause(); });
-  }
-
-  playlist.forEach((track, i) => {
-    const card = document.createElement('div');
-    card.className = 'player compact';
-
-    card.innerHTML = `
-      <div class="artwork"><img src="${track.cover || ''}" alt="${track.title}" onerror="this.style.opacity=.25;this.style.transform='scale(.98)';"/></div>
-      <div class="meta">
-        <div class="title">${track.title}</div>
-        <div class="artist">${track.artist}</div>
-      </div>
-      <div class="progress-row">
-        <input type="range" class="seek" min="0" max="100" value="0" step="0.1">
-        <div class="time-row"><span class="currentTime">0:00</span><span class="remainingTime">-0:00</span></div>
-      </div>
-      <div class="controls">
-        <div class="ctrl-group">
-          <button class="icon-btn play-btn" aria-label="Main/Jeda">
-            <svg viewBox="0 0 24 24" fill="currentColor" class="playIcon"><path d="M8 5v14l11-7z"/></svg>
-          </button>
-        </div>
-      </div>
-      <audio preload="metadata" src="${track.src || ''}"></audio>
-    `;
-
-    const audio = card.querySelector('audio');
-    const playBtn = card.querySelector('.play-btn');
-    const seek = card.querySelector('.seek');
-    const currentTimeEl = card.querySelector('.currentTime');
-    const remainingTimeEl = card.querySelector('.remainingTime');
-    const playIconPath = card.querySelector('.playIcon path');
-
-    const playPath = 'M8 5v14l11-7z';
-    const pausePath = 'M6 5h4v14H6zM14 5h4v14h-4z';
-
-    playBtn.addEventListener('click', () => {
-      if (!audio.src) { showToast('Tiada fail audio untuk "' + track.title + '"'); return; }
-      if (audio.paused) {
-        pauseAllExcept(audio);
-        audio.play();
-      } else {
-        audio.pause();
-      }
-    });
-
-    audio.addEventListener('play', () => { playIconPath.setAttribute('d', pausePath); card.classList.add('playing'); });
-    audio.addEventListener('pause', () => { playIconPath.setAttribute('d', playPath); card.classList.remove('playing'); });
-
-    audio.addEventListener('timeupdate', () => {
-      if (!audio.duration) return;
-      const percent = (audio.currentTime / audio.duration) * 100;
-      seek.value = percent;
-      seek.style.background = `linear-gradient(to right, var(--track-fill) ${percent}%, var(--track-fill) ${percent}%, var(--track-empty) ${percent}%, var(--track-empty) 100%)`;
-      currentTimeEl.textContent = formatTime(audio.currentTime);
-      remainingTimeEl.textContent = '-' + formatTime(audio.duration - audio.currentTime);
-    });
-
-    audio.addEventListener('ended', () => { audio.currentTime = 0; audio.pause(); });
-
-    seek.addEventListener('input', () => {
-      if (audio.duration) audio.currentTime = (seek.value / 100) * audio.duration;
-    });
-
-    playersRoot.appendChild(card);
-
-    // Try cover filenames by number: 1.jpeg / 1.jpg / cover1.jpg / cover1.jpeg
-    const img = card.querySelector('.artwork img');
-    const candidates = [`${i+1}.jpeg`, `${i+1}.jpg`, `cover${i+1}.jpg`, `cover${i+1}.jpeg`, `cover${i+1}.png`];
-    (function trySet(n){
-      if (n >= candidates.length) return;
-      img.src = candidates[n];
-      img.onload = () => { img.style.opacity = 1; };
-      img.onerror = () => trySet(n+1);
-    })(0);
+  playBtn.addEventListener('click', () => {
+    if (audio.paused) audio.play(); else audio.pause();
   });
-</script>
+  audio.addEventListener('play', () => playIcon.setAttribute('d', pausePath));
+  audio.addEventListener('pause', () => playIcon.setAttribute('d', playPath));
 
+  audio.addEventListener('timeupdate', () => {
+    if (!audio.duration) return;
+    const pct = (audio.currentTime / audio.duration) * 100;
+    progressFill.style.width = pct + '%';
+    currentTimeEl.textContent = formatTime(audio.currentTime);
+    remainingTimeEl.textContent = '-' + formatTime(audio.duration - audio.currentTime);
+  });
+
+  function formatTime(sec){ if (!isFinite(sec)) return '0:00'; const m=Math.floor(sec/60); const s=Math.floor(sec%60).toString().padStart(2,'0'); return `${m}:${s}` }
+
+  // prev/next are placeholders (no playlist here)
+  prevBtn.addEventListener('click', () => { audio.currentTime = Math.max(0, audio.currentTime - 10); });
+  nextBtn.addEventListener('click', () => { audio.currentTime = Math.min(audio.duration||0, audio.currentTime + 10); });
+
+  // Try to set album art from numeric files (1.jpeg .. 10.jpeg)
+  (function trySetArt(){
+    const candidates = ['1.jpeg','1.jpg','cover1.jpg','cover1.jpeg','1.png'];
+    let idx=0;
+    function attempt(){ if(idx>=candidates.length) return; const u=candidates[idx++]; const img=new Image(); img.onload=(()=>{ albumArt.style.backgroundImage = `url(${u})`; }); img.onerror=attempt; img.src=u }
+    attempt();
+  })();
+</script>
 </body>
 </html>
